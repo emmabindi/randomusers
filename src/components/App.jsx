@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../index.css";
-import User from "./User";
-import UserInput from "./UserInput";
-import UserOutput from "./UserOutput";
 
+function App() {
+  const [user, setUser] = useState(null)
+
+  const onClick = () => {
+    // what do I put here to get the page to refresh upon click and show new user 
+    setUser(setUser)
+    console.log("clicking")
+  }
+
+  useEffect(() => {
+    console.log("Inside use effect")
+    async function getUserData() {
+      try {
+        const response = await fetch("https://randomuser.me/api/")
+        const randomUser = await response.json()
+        setUser(randomUser.results[0])
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    getUserData();
+  }, [])
+
+  return user && (
+    <div>
+      <h1>User info goes here</h1>
+      <p>{user.email
+      }</p>
+      <button onClick={onClick}>Click Me</button>
+    </div>
+  )
+}
+/*
 class App extends React.Component {
   
   state = {customData:""};
@@ -48,6 +78,6 @@ class App extends React.Component {
       );
     }
   }
-}
+} */
 
 export default App;
